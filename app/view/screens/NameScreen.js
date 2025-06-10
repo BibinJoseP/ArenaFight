@@ -7,11 +7,11 @@ Ext.define("ArenaFight.view.screens.NameScreen", {
         "Ext.field.Text", 
         "Ext.Button",
         "Ext.MessageBox",
-        "ArenaFight.view.screens.FightScreen" // Ensure FightScreen is required
+        "ArenaFight.view.screens.FightScreen" 
     ],
 
     layout: "fit",
-    cls: 'name-screen-container', // For CSS styling
+    cls: 'name-screen-container',
 
     items: [{
         xtype: "formpanel",
@@ -25,17 +25,25 @@ Ext.define("ArenaFight.view.screens.NameScreen", {
         items: [{
             xtype: "component",
             cls: 'name-screen-title',
-            html: "Enter Your Fighter Name"
+            html: "Enter Your Name"
         }, {
             xtype: "textfield",
             name: "fighterName",
             placeHolder: "Fighter Name",
             clearable: false,
             required: true,
-            cls: 'x-namescreen-fighter-name-field'
+            cls: 'x-namescreen-fighter-name-field',
+            listeners: {
+                keyup: function (field) {
+                    const btn = field.up('formpanel').down('button[name=startBattleBtn]');
+                    btn.setHidden(!field.getValue().trim());
+                }
+            }
         }, {
             xtype: "button",
             text: "START BATTLE",
+            name: "startBattleBtn",
+            hidden: true,
             margin: "25 0 0 0",
             cls: 'name-screen-button',
                  handler: function (btn) {

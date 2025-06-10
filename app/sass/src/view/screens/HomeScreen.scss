@@ -1,0 +1,85 @@
+// Variables
+$primary-color: #ff1744;
+$white: #fff;
+$overlay-bg: rgba(0, 0, 0, 0.6);
+$text-shadow: 2px 2px 4px #000;
+
+// Mixin for shared slide styles
+@mixin slide-style($image) {
+    background-image: url($image);
+    background-size: cover;
+    background-position: center;
+
+    .slide-content {
+        position: absolute;
+        bottom: 150px;
+        width: 100%;
+        text-align: center;
+
+        h1 {
+            color: $white;
+            text-shadow: $text-shadow;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            padding: 20px;
+            background-color: $overlay-bg;
+            display: inline-block;
+            border: 2px solid $primary-color;
+            border-radius: 10px;
+        }
+    }
+}
+
+// Home screen styling
+.home-screen {
+    background-color: #000;
+
+    .home-slideshow {
+        .x-carousel-indicator {
+            bottom: 80px;
+
+            span {
+                background-color: rgba(255, 255, 255, 0.5);
+
+                &.x-carousel-indicator-active {
+                    background-color: $primary-color;
+                }
+            }
+        }
+    }
+
+    .slide-1 { @include slide-style('../../../../../resources/images/slide1.jpg'); }
+    .slide-2 { @include slide-style('../../../../../resources/images/slide2.jpg'); }
+    .slide-3 { @include slide-style('../../../../../resources/images/slide3.jpg'); }
+
+    .x-button-action {
+        background-color: $primary-color;
+        color: $white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        height: 50px;
+        border-radius: 25px;
+        margin: 0 20% 50px 20%;
+        box-shadow: 0 0 15px rgba(255, 23, 68, 0.7);
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 23, 68, 0.9);
+        }
+    }
+
+    // Responsive tweaks
+    @media (max-width: 600px) {
+        .slide-content h1 {
+            font-size: 1.6rem;
+            padding: 10px;
+        }
+
+        .x-button-action {
+            font-size: 1rem;
+            margin: 0 10% 30px 10%;
+        }
+    }
+}
