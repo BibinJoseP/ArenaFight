@@ -135,6 +135,20 @@
   background-color: #f20635;
 }
 
+.custom-fight-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  background: #ff1744;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-fight-btn:hover {
+  background: #f20635;
+}
 
 
 .nav-toolbar {
@@ -323,6 +337,9 @@
         .x-label-el, .x-input-el {
             color: white;
         }
+          .x-field.x-focused > .x-label-el {
+        color: white;
+    }
     }
 
 /* Responsive Adjustments */
