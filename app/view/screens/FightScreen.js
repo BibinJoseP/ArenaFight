@@ -56,6 +56,7 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
               { html: `💪 <b>Strength:</b> <span style="color:#ff5252;">80</span>` },
               { html: `🔥 <b>Stamina:</b> <span style="color:#ffc107;">65</span>` },
               { html: `🪙 <b>Money:</b> <span style="color:#7e57c2;">$120</span>` },
+              { html: `🏃 <b>Agility:</b> <span style="color:#00bcd4;">72</span>` }
             ],
           },
         ],

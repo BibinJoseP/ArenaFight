@@ -1,6 +1,10 @@
 // app/view/templates/OpponentCardTemplate.js
 Ext.define("ArenaFight.view.templates.OpponentCardTemplate", {
   singleton: true,
+            // <span style="color:#ff5252;">STR: {strength}</span> |
+          // <span style="color:#ffc107;">STA: {stamina}</span><br/>
+          // <span style="color:#00e676;">INT: {intellect}</span> |
+          // <span style="color:#7e57c2;">AGI: {agility}</span>
 
   getTemplate: function () {
     return new Ext.XTemplate(`
@@ -10,14 +14,11 @@ Ext.define("ArenaFight.view.templates.OpponentCardTemplate", {
         </div>
         <div style="flex: 1; padding: 0 12px; font-size:14px;">
           <b style="color:#4a90e2;">{name}</b> <span style="font-size: 12px;">(Lvl {level})</span><br/>
-          <span style="color:#ff5252;">STR: {strength}</span> |
-          <span style="color:#ffc107;">STA: {stamina}</span><br/>
-          <span style="color:#00e676;">INT: {intellect}</span> |
-          <span style="color:#7e57c2;">AGI: {agility}</span>
+
         </div>
         <div style="text-align:right;">
           <button class="custom-fight-btn"
-            onclick="ArenaFight.app.getController('Main').fightOpponent('{name}', {strength}, {stamina}, {intellect}, {agility})">
+            onclick="ArenaFight.app.getController('Main').fightOpponent('{name}', {strength}, {stamina}, {intellect}, {agility}, '{image}')">
             Fight
           </button>
         </div>

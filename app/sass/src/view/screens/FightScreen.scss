@@ -12,6 +12,25 @@
     --border-radius-lg: 0.75rem;
     --border-radius-full: 9999px;
 }
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popBounce {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  80% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.animate-fade-scale {
+  animation: fadeInScale 0.6s ease-out;
+}
+
+.animate-pop-bounce {
+  animation: popBounce 0.6s ease-out;
+}
 
 
 .app-container {
@@ -341,6 +360,9 @@
         color: white;
     }
     }
+.custom-battle-panel .x-panel-body-el {
+  background-color: #1c1c1e;
+}
 
 /* Responsive Adjustments */
 @media (max-width: 640px) {
