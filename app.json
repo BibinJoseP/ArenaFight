@@ -239,6 +239,16 @@
      */
     "css": [
         {
+        "path": "sass/etc/all.scss",
+        "bundle": true,
+        "exclude": ["fashion"]
+    },
+    // {
+    //     "path": "sass/src/view/screens/NameScreen.scss",
+    //     "bundle": true,
+    //     "exclude": ["fashion"]
+    // },
+        {
             // this entry uses an ant variable that is the calculated
             // value of the generated output css file for the app,
             // defined in .sencha/app/defaults.properties

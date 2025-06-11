@@ -1,11 +1,37 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.yourcompany.arenafight" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ArenaFight</name>
-    <description>Sample Apache Cordova App</description>
+    <description>ArenaFight – A Cordova + Ext JS mobile game</description>
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+    <!-- Platform-specific settings -->
+<platform name="android">
+
+    <!-- Modern Splash Icon -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splash/android/splash-icon.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#000000" />
+    <preference name="AndroidWindowSplashScreenDuration" value="3000" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <!-- <splash density="mdpi" src="resources/splash/android/splash-mdpi.png" />
+<splash density="hdpi" src="resources/splash/android/splash-hdpi.png" />
+<splash density="xhdpi" src="resources/splash/android/splash-xhdpi.png" />
+<splash density="xxhdpi" src="resources/splash/android/splash-xxhdpi.png" />
+<splash density="xxxhdpi" src="resources/splash/android/splash-xxxhdpi.png" /> -->
+
+
+    <!-- App Icons -->
+    <icon density="mdpi" src="resources/icon/android/icon-mdpi.png" />
+    <icon density="hdpi" src="resources/icon/android/icon-hdpi.png" />
+    <icon density="xhdpi" src="resources/icon/android/icon-xhdpi.png" />
+    <icon density="xxhdpi" src="resources/icon/android/icon-xxhdpi.png" />
+    <icon density="xxxhdpi" src="resources/icon/android/icon-xxxhdpi.png" />
+
+</platform>
+
+
 </widget>

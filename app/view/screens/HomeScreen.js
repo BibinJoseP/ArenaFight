@@ -1,26 +1,112 @@
-Ext.define('ArenaFight.view.screens.HomeScreen', {
-    extend: 'Ext.Container',
-    xtype: 'homescreen',
+Ext.define("ArenaFight.view.screens.HomeScreen", {
+  extend: "Ext.Container",
+  xtype: "homescreen",
+  cls: "home-screen",
+  flex: 1,
 
-    config: {
-        layout: 'vbox',
-        style: 'background:#111; color:white;',
-        items: [
-            {
-                xtype: 'container',
-                html: '<h2 style="text-align:center;margin-top:40%;">Welcome to ArenaFight</h2>',
-                flex: 1
-            },
-            {
-                xtype: 'button',
-                text: 'Start Game',
-                ui: 'action',
-                margin: 20,
-                handler: function () {
-                    // Move to NameScreen (index 1)
-                    Ext.ComponentQuery.query('app-main')[0].setActiveItem(1);
-                }
+  requires: ["Ext.carousel.Carousel", "Ext.Audio"],
+
+  layout: "fit",
+
+  items: [
+    {
+      xtype: "carousel",
+      reference: "slideshow",
+      cls: "home-slideshow",
+      flex: 1,
+      indicator: false,
+      userInteractionEnabled: false,
+      draggable: false,
+      listeners: {
+        listeners: {
+          initialize: function (carousel) {
+            // Disable touch events that could cause swiping
+            var innerElement = carousel.innerElement;
+
+            innerElement.on({
+              touchstart: function (e) {
+                e.preventDefault();
+              },
+              touchmove: function (e) {
+                e.preventDefault();
+              },
+              swipe: function (e) {
+                e.preventDefault();
+              },
+              scope: this,
+            });
+
+            // Also disable pointer events for desktop
+            innerElement.setStyle("pointer-events", "none");
+          },
+        },
+      },
+      items: [
+        {
+          xtype: "component",
+          cls: "slide-1",
+          html: "<div class='slide-content'><h1>WELCOME TO ARENA FIGHT</h1></div>",
+        },
+        {
+          xtype: "component",
+          cls: "slide-2",
+        //   html: "<div class='slide-content'><h1>BATTLE YOUR RIVALS</h1></div>",
+        },
+        {
+          xtype: "component",
+          cls: "slide-3",
+          html: "<div class='slide-content'><h1>BECOME THE CHAMPION</h1></div>",
+        },
+      ],
+    },
+  ],
+
+initialize: function () {
+    this.callParent();
+
+    // Create and play background audio
+    this.backgroundAudio = Ext.create("Ext.Audio", {
+        url: "../../../resources/audio/background.mp3",
+        loop: true,
+        volume: 0.5,
+        hidden: true
+    });
+
+    this.backgroundAudio.play();
+
+    // Auto slide through carousel
+    this.nextSlide = function () {
+        var carousel = this.down('carousel');
+        if (carousel) {
+            var currentIndex = carousel.getActiveIndex();
+            var totalSlides = carousel.getItems().length;
+
+            if (currentIndex < totalSlides - 1) {
+                carousel.setActiveItem(currentIndex + 1, {
+                    type: 'slide',
+                    direction: 'left',
+                    duration: 500
+                });
             }
-        ]
-    }
+        }
+    };
+
+    // Start auto slide every 2 seconds after each transition
+    this.down('carousel').on('activeitemchange', function () {
+        Ext.defer(this.nextSlide, 2000, this);
+    }, this);
+
+    // Kick off first slide after 2s
+    Ext.defer(this.nextSlide, 2000, this);
+
+    // Automatically navigate to namescreen after 6 seconds
+    this.autoNavigateTimeout = Ext.defer(function () {
+        // Clean up before navigation
+        this.backgroundAudio.destroy();
+        this.autoNavigateTimeout = null;
+
+        Ext.Viewport.setActiveItem({ xtype: "namescreen" });
+    }, 6000, this);
+},
+
 });

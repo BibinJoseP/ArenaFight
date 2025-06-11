@@ -6,6 +6,7 @@ Ext.application({
     extend: 'ArenaFight.Application',
 
     name: 'ArenaFight',
+    controllers: ['Main'],
 
     requires: [
         // This will automatically load all classes in the ArenaFight namespace
