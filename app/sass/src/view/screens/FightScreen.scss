@@ -1,0 +1,405 @@
+:root {
+    --primary-bg: #0d1117;
+    --secondary-bg: #161b22;
+    --accent-blue: #4a90e2;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --accent-purple: #6f42c1;
+    --text-light: #e6edf3;
+    --border-color: #30363d;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --panel-padding: 1.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-full: 9999px;
+}
+
+
+.app-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-bg) 0%, #05080c 100%);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.header-panel {
+    background-color: var(--secondary-bg);
+    padding: var(--panel-padding);
+    margin: 0.5rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 8px 16px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--border-radius-full);
+    margin-right: 1rem;
+    border: 3px solid var(--accent-blue);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+}
+
+.user-stats p {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.main-content-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: var(--panel-padding);
+    margin: 0.5rem;
+    background-color: var(--secondary-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: inset 0 0 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.opponent-card {
+  padding: 10px;
+  margin: 8px 10px;
+  border: 1px solid #333;
+  background-color: #111;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+}
+
+.opponent-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;  // 👈 This centers image + text vertically
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.opponent-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #ff1744;
+  object-fit: cover;
+}
+
+.opponent-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  // 👈 Vertically centers text in its space
+  font-size: 14px;
+}
+.fight-screen .x-dataview.x-container {
+  background-color: transparent !important;
+}
+
+.opponent-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #00bfff;
+}
+
+.opponent-level {
+  font-size: 13px;
+  color: #aaa;
+  margin-left: 4px;
+}
+
+.opponent-stats {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #eee;
+}
+
+.opponent-action {
+  display: flex;
+  align-items: center;  // 👈 Centers the button vertically
+}
+
+.fight-btn {
+  background-color: #ff1744;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.fight-btn:hover {
+  background-color: #f20635;
+}
+
+
+
+.nav-toolbar {
+    background-color: var(--secondary-bg);
+    padding: 0.75rem;
+    margin: 0.5rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 -8px 16px var(--shadow-color);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap; /* allow wrapping */
+}
+
+
+.bottom-nav-btn {
+  color: #e53935 !important; // 🔴 red shade
+  fill: #e53935 !important;
+
+  .x-button-icon,
+  .x-button-label {
+    color: #e53935 !important;
+    fill: #e53935 !important;
+  }
+}
+
+.bottom-nav-btn.selected {
+  background-color: rgba(229, 57, 53, 0.15); // optional selected background
+  border-radius: 8px;
+}
+
+
+
+
+.message-box {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    max-width: 90%;
+    margin: 2rem auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.message-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent-red), var(--accent-blue));
+    animation: pulse-border 2s infinite alternate;
+}
+
+@keyframes pulse-border {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+.message-box h2 {
+    font-size: 2rem;
+    color: var(--accent-red);
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+.message-box p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+}
+
+.return-button {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(45deg, var(--accent-blue), #3498db);
+    color: white;
+    font-weight: bold;
+    border-radius: var(--border-radius-full);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+    transition: all 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.return-button:hover {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 7px 18px rgba(74, 144, 226, 0.6);
+}
+
+.content-panel {
+    padding: 2rem;
+    background-color: #21262d;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.content-panel h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.content-panel p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    color: #b0c4de;
+}
+
+#logoutBtn.action-button {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(45deg, var(--accent-red), #e74c3c);
+    color: white;
+    font-weight: bold;
+    border-radius: var(--border-radius-full);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    transition: all 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+    margin-top: 2rem;
+}
+
+#logoutBtn.action-button:hover {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 7px 18px rgba(220, 53, 69, 0.6);
+}
+
+.inventory-item {
+  background-color: #1c1c1e;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .item-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .item-actions button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+  }
+
+  .buy-btn {
+    background-color: #007bff;
+  }
+
+  .sell-btn {
+    background-color: #dc3545;
+  }
+
+  .buy-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .sell-btn:hover {
+    background-color: #c82333;
+  }
+}
+    .arena-fightscreen-form-panel {
+        padding: 20px;        
+        .x-formpanel-body-el  {
+            background-color: #1c1c1e;
+        }
+        .x-label-el, .x-input-el {
+            color: white;
+        }
+    }
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .header-panel {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+    .profile-image {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    .user-stats p {
+        font-size: 0.85rem;
+    }
+
+    .opponent-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .opponent-card img {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    .opponent-card .opponent-details {
+        text-align: center;
+    }
+    .fight-button {
+        margin-left: 0;
+    }
+
+    .nav-toolbar {
+        padding: 0.5rem;
+    }
+    .nav-button {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 0.2rem;
+        font-size: 0.7rem;
+    }
+    .nav-button i {
+        font-size: 1.3rem;
+        margin-bottom: 0.25rem;
+    }
+    .nav-button span {
+        font-size: 0.65rem;
+    }
+
+    .message-box, .content-panel {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    .message-box h2, .content-panel h2 {
+        font-size: 1.6rem;
+    }
+    .message-box p, .content-panel p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 641px) {
+    .opponent-card {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+    }
+    .opponent-card img {
+        margin-right: 1.5rem;
+        margin-bottom: 0;
+    }
+    .opponent-card .opponent-details {
+        text-align: left;
+    }
+    .fight-button {
+        margin-top: 0;
+        margin-left: auto;
+    }
+}
