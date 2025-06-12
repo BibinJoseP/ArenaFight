@@ -31,11 +31,11 @@ $text-shadow: 2px 2px 4px #000;
     }
 }
 
-// Home screen styling
-.home-screen {
+// Intro screen styling
+.intro-screen {
     background-color: #000;
 
-    .home-slideshow {
+    .intro-slideshow {
         .x-carousel-indicator {
             bottom: 80px;
 
@@ -47,6 +47,7 @@ $text-shadow: 2px 2px 4px #000;
                 }
             }
         }
+        
     }
 
     .slide-1 { @include slide-style('../../../../../resources/images/slide1.jpg'); }
