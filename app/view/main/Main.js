@@ -4,7 +4,7 @@ Ext.define('ArenaFight.view.main.Main', {
     fullscreen: true,
 
     requires: [
-        'ArenaFight.view.screens.HomeScreen',
+        'ArenaFight.view.screens.IntroScreen',
         'ArenaFight.view.screens.NameScreen',
         'ArenaFight.view.screens.FightScreen'
     ],
@@ -13,7 +13,7 @@ Ext.define('ArenaFight.view.main.Main', {
         layout: 'card',
         activeItem: 0, // Start with HomeScreen
         items: [
-            { xtype: 'homescreen' },
+            { xtype: 'introscreen' },
             { xtype: 'namescreen' },
             { xtype: 'fightscreen' }
         ]

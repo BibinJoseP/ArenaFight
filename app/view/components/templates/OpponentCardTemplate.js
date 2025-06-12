@@ -1,4 +1,3 @@
-// app/view/templates/OpponentCardTemplate.js
 Ext.define("ArenaFight.view.templates.OpponentCardTemplate", {
   singleton: true,
             // <span style="color:#ff5252;">STR: {strength}</span> |

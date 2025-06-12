@@ -1,7 +1,7 @@
-Ext.define("ArenaFight.view.screens.HomeScreen", {
+Ext.define("ArenaFight.view.screens.IntroScreen", {
   extend: "Ext.Container",
-  xtype: "homescreen",
-  cls: "home-screen",
+  xtype: "introscreen",
+  cls: "intro-screen",
   flex: 1,
 
   requires: ["Ext.carousel.Carousel", "Ext.Audio"],
@@ -10,37 +10,14 @@ Ext.define("ArenaFight.view.screens.HomeScreen", {
 
   items: [
     {
-      xtype: "carousel",
-      reference: "slideshow",
-      cls: "home-slideshow",
-      flex: 1,
-      indicator: false,
-      userInteractionEnabled: false,
-      draggable: false,
-      listeners: {
-        listeners: {
-          initialize: function (carousel) {
-            // Disable touch events that could cause swiping
-            var innerElement = carousel.innerElement;
-
-            innerElement.on({
-              touchstart: function (e) {
-                e.preventDefault();
-              },
-              touchmove: function (e) {
-                e.preventDefault();
-              },
-              swipe: function (e) {
-                e.preventDefault();
-              },
-              scope: this,
-            });
-
-            // Also disable pointer events for desktop
-            innerElement.setStyle("pointer-events", "none");
-          },
-        },
-      },
+ xtype: "carousel",
+    reference: "slideshow",
+    cls: "intro-slideshow",
+    flex: 1,
+    indicator: false,
+    userInteractionEnabled: false,
+    draggable: false,
+    
       items: [
         {
           xtype: "component",

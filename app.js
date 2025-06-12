@@ -15,5 +15,14 @@ Ext.application({
     ],
 
     // The name of the initial view to create.
-    mainView: 'ArenaFight.view.main.Main'
+    mainView: 'ArenaFight.view.main.Main',
+     launch: function() {
+        // Carousel override goes here
+        Ext.override(Ext.carousel.Carousel, {
+            onDragStart: Ext.emptyFn,
+            onDrag: Ext.emptyFn,
+            onDragEnd: Ext.emptyFn,
+            onSwipe: Ext.emptyFn
+        });        
+    }
 });
