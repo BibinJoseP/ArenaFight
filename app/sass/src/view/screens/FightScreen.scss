@@ -52,13 +52,11 @@
     align-items: center;
 }
 
-.profile-image {
-    width: 4rem;
-    height: 4rem;
-    border-radius: var(--border-radius-full);
-    margin-right: 1rem;
-    border: 3px solid var(--accent-blue);
-    box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+.fighter-image {
+  border-radius: 50%;
+  border: 3px solid #f00;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+  margin-bottom: 8px;
 }
 
 .user-stats p {

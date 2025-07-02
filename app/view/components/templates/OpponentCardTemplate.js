@@ -16,10 +16,7 @@ Ext.define("ArenaFight.view.templates.OpponentCardTemplate", {
 
         </div>
         <div style="text-align:right;">
-          <button class="custom-fight-btn"
-            onclick="ArenaFight.app.getController('Main').fightOpponent('{name}', {strength}, {stamina}, {intellect}, {agility}, '{image}')">
-            Fight
-          </button>
+<button class="custom-fight-btn">Fight</button>
         </div>
       </div>
     `);

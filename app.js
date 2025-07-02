@@ -23,6 +23,20 @@ Ext.application({
             onDrag: Ext.emptyFn,
             onDragEnd: Ext.emptyFn,
             onSwipe: Ext.emptyFn
-        });        
+        });
+                // ✅ Setup Cordova deviceready listener
+        window.isDeviceReady = false;
+
+        document.addEventListener('deviceready', function () {
+            console.log('Cordova is ready.');
+            window.isDeviceReady = true;
+        }, false);
+
+        // Optional: fallback if Cordova doesn't load after 5 seconds (debug mode)
+        setTimeout(() => {
+            if (!window.isDeviceReady) {
+                console.warn('Cordova deviceready not triggered. Are you testing in browser?');
+            }
+        }, 5000); 
     }
 });
