@@ -41,49 +41,46 @@ Ext.define("ArenaFight.view.screens.IntroScreen", {
 initialize: function () {
     this.callParent();
 
-    // Create and play background audio
     this.backgroundAudio = Ext.create("Ext.Audio", {
-        url: "../../../resources/audio/background.mp3",
+        url: "resources/audio/background.mp3",
         loop: true,
         volume: 0.5,
         hidden: true
     });
-
     this.backgroundAudio.play();
 
-    // Auto slide through carousel
-    this.nextSlide = function () {
-        var carousel = this.down('carousel');
-        if (carousel) {
-            var currentIndex = carousel.getActiveIndex();
-            var totalSlides = carousel.getItems().length;
+    const carousel = this.down('carousel');
 
-            if (currentIndex < totalSlides - 1) {
-                carousel.setActiveItem(currentIndex + 1, {
-                    type: 'slide',
-                    direction: 'left',
-                    duration: 500
-                });
-            }
+    this.nextSlide = function () {
+        const currentIndex = carousel.getActiveIndex();
+        const totalSlides = carousel.getItems().length;
+        if (currentIndex < totalSlides - 1) {
+            carousel.setActiveItem(currentIndex + 1, {
+                type: 'slide',
+                direction: 'left',
+                duration: 500
+            });
         }
     };
 
-    // Start auto slide every 2 seconds after each transition
-    this.down('carousel').on('activeitemchange', function () {
-        Ext.defer(this.nextSlide, 2000, this);
-    }, this);
-
-    // Kick off first slide after 2s
+    carousel.on('activeitemchange', this.scheduleNextSlide, this);
     Ext.defer(this.nextSlide, 2000, this);
 
-    // Automatically navigate to namescreen after 6 seconds
-    this.autoNavigateTimeout = Ext.defer(function () {
-        // Clean up before navigation
+    this.autoNavigateTimeout = Ext.defer(() => {
         this.backgroundAudio.destroy();
-        this.autoNavigateTimeout = null;
-
         Ext.Viewport.setActiveItem({ xtype: "namescreen" });
-    }, 6000, this);
+    }, 6000);
 },
+
+scheduleNextSlide: function () {
+    Ext.defer(this.nextSlide, 2000, this);
+},
+
+destroy: function () {
+    this.backgroundAudio && this.backgroundAudio.destroy();
+    this.autoNavigateTimeout && clearTimeout(this.autoNavigateTimeout);
+    this.callParent();
+},
+
 
 });

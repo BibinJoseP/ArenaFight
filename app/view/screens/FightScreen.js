@@ -1,6 +1,7 @@
 Ext.define("ArenaFight.view.screens.FightScreen", {
   extend: "Ext.Container",
   xtype: "fightscreen",
+  controller: "fightscreen",
 
   config: {
     layout: "vbox",
@@ -22,7 +23,8 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
             items: [
               {
                 xtype: "image",
-                src: "../../../resources/images/profile.jpg",
+                src: "resources/images/profile.jpg",
+                cls: "fighter-image",
                 width: 82,
                 height: 82,
                 style: `
@@ -52,11 +54,21 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
               style: "font-size: 16px; margin-bottom: 4px;",
             },
             items: [
-              { html: `⚔️ <b>Level:</b> <span style="color:#00e676;">5</span>` },
-              { html: `💪 <b>Strength:</b> <span style="color:#ff5252;">80</span>` },
-              { html: `🔥 <b>Stamina:</b> <span style="color:#ffc107;">65</span>` },
-              { html: `🪙 <b>Money:</b> <span style="color:#7e57c2;">$120</span>` },
-              { html: `🏃 <b>Agility:</b> <span style="color:#00bcd4;">72</span>` }
+              {
+                html: `⚔️ <b>Level:</b> <span style="color:#00e676;">5</span>`,
+              },
+              {
+                html: `💪 <b>Strength:</b> <span style="color:#ff5252;">80</span>`,
+              },
+              {
+                html: `🔥 <b>Stamina:</b> <span style="color:#ffc107;">65</span>`,
+              },
+              {
+                html: `🪙 <b>Money:</b> <span style="color:#7e57c2;">$120</span>`,
+              },
+              {
+                html: `🏃 <b>Agility:</b> <span style="color:#00bcd4;">72</span>`,
+              },
             ],
           },
         ],
@@ -83,47 +95,39 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
           {
             xtype: "button",
             text: "Arena",
-            iconCls: "x-fa fa-bolt",
+            iconCls: "x-fa fa-dice",
             iconAlign: "top",
-            cls: "bottom-nav-btn selected",
-            listeners: {
-              tap: function (btn) {
-                const toolbar = btn.up("toolbar");
-                toolbar.items.each((b) => b.removeCls("selected"));
-                btn.addCls("selected");
-              },
-            },
+            cls: "bottom-nav-btn selected", // auto-selected by default
             handler: function (btn) {
+              const toolbar = btn.up("toolbar");
+              toolbar.items.each((b) => b.removeCls("selected"));
+              btn.addCls("selected");
+
               const main = btn.up("fightscreen").down("#mainContent");
               main.removeAll(true);
               main.add({
-                xtype: "container",
-                layout: "vbox",
-                showAnimation: {
-                  type: "fade",
-                  duration: 300,
+                xtype: "dataview",
+                itemId: "opponentList",
+                store: { type: "opponents" },
+                itemCls: "opponent-card",
+                itemTpl:
+                  ArenaFight.view.templates.OpponentCardTemplate.getTemplate(),
+                listeners: {
+                  itemtap: function (dataview, index, target, record, event) {
+                    if (event.target.classList.contains("custom-fight-btn")) {
+                      ArenaFight.app
+                        .getController("Main")
+                        .fightOpponent(
+                          record.get("name"),
+                          record.get("strength"),
+                          record.get("stamina"),
+                          record.get("intellect"),
+                          record.get("agility"),
+                          record.get("image")
+                        );
+                    }
+                  },
                 },
-                items: [
-                  {
-                    xtype: "component",
-                    html: "<h2 style='color:#2196f394; padding: 10px 10px 0 10px;'>Arena</h2>",
-                  },
-                  {
-                    xtype: "container",
-                    flex: 1,
-                    scrollable: true,
-                    padding: 10,
-                    items: [
-                      {
-                        xtype: "dataview",
-                        store: { type: "opponents" },
-                        itemCls: "opponent-card",
-                        itemTpl:
-                          ArenaFight.view.templates.OpponentCardTemplate.getTemplate(),
-                      },
-                    ],
-                  },
-                ],
               });
             },
           },
@@ -144,13 +148,20 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
             },
             handler: function (btn) {
               const main = btn.up("fightscreen").down("#mainContent");
-              main.removeAll();
+              main.removeAll(true);
               main.add({
                 xtype: "container",
                 padding: 10,
                 scrollable: true,
+                showAnimation: {
+                  type: "fade",
+                  duration: 300,
+                },
                 items: [
-                  { xtype: "component", html: "<h2 style='color:#2196f394;'>Inventory</h2>" },
+                  {
+                    xtype: "component",
+                    html: "<h2 style='color:#2196f394;'>Inventory</h2>",
+                  },
                   {
                     xtype: "dataview",
                     cls: "inventory-list",
@@ -193,19 +204,36 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
             },
             handler: function (btn) {
               const main = btn.up("fightscreen").down("#mainContent");
-              main.removeAll();
+              main.removeAll(true);
               main.add({
                 xtype: "container",
                 padding: 10,
                 scrollable: true,
+                showAnimation: {
+                  type: "fade",
+                  duration: 300,
+                },
                 items: [
-                  { xtype: "component", html: "<h2 style='color:#2196f394;'>Settings</h2>"},
+                  {
+                    xtype: "component",
+                    html: "<h2 style='color:#2196f394;'>Settings</h2>",
+                  },
                   {
                     xtype: "formpanel",
                     cls: "arena-fightscreen-form-panel",
                     items: [
-                      { xtype: "togglefield", label: "Music", labelAlign: "left", value: 1 },
-                      { xtype: "togglefield", label: "Sound Effects", labelAlign: "left", value: 1 },
+                      {
+                        xtype: "togglefield",
+                        label: "Music",
+                        labelAlign: "left",
+                        value: 1,
+                      },
+                      {
+                        xtype: "togglefield",
+                        label: "Sound Effects",
+                        labelAlign: "left",
+                        value: 1,
+                      },
                       {
                         xtype: "selectfield",
                         label: "Difficulty",
@@ -222,19 +250,29 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                         ui: "decline",
                         margin: "20 0",
                         handler: function () {
-                          Ext.Msg.alert("Reset", "Progress has been reset (not really 😄)");
+                          Ext.Msg.alert(
+                            "Reset",
+                            "Progress has been reset (not really 😄)"
+                          );
                         },
                       },
-                      {
-                        xtype: "button",
-                        text: "Logout",
-                        ui: "decline",
-                        handler: function () {
-                          Ext.Msg.confirm("Exit", "Do you want to exit the game?", (btn) => {
-                              if (btn === "yes") navigator.app.exitApp();
-                          });
-                        },
-                      },
+{
+  xtype: "button",
+  text: "Logout",
+  ui: "decline",
+  handler: function () {
+    Ext.Msg.confirm("Exit", "Do you want to exit the game?", (btn) => {
+      if (btn === "yes") {
+        if (isDeviceReady && navigator.app && typeof navigator.app.exitApp === "function") {
+          navigator.app.exitApp();
+        } else {
+          Ext.Msg.alert("Error", "Cordova not ready or not supported in browser.");
+        }
+      }
+    });
+  },
+},
+
                     ],
                   },
                 ],
@@ -267,11 +305,11 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
     }
 
     // ✅ Handle Android back button
-    document.addEventListener("backbutton", () => {
+    document.addEventListener(
+      "backbutton",
+      () => {
         const toolbar = this.down("toolbar[docked=bottom]");
-        const selectedBtn = toolbar.down(".selected");
-
-        if (selectedBtn.getText() !== "Arena") {
+        if (selectedBtn && selectedBtn.getText() !== "Arena") {
           const arenaBtn = toolbar.down("button[text=Arena]");
           if (arenaBtn) {
             toolbar.items.each((btn) => btn.removeCls("selected"));
@@ -283,6 +321,8 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
             if (btn === "yes") navigator.app.exitApp();
           });
         }
-    }, false);
+      },
+      false
+    );
   },
 });

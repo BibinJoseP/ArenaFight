@@ -14,6 +14,9 @@ Ext.define('ArenaFight.Application', {
             quickTips: true
         }
     },
+        launch: function () {
+Ext.Viewport.down('app-main').setActiveItem({ xtype: 'namescreen' }, { type: 'slide', direction: 'left' });
+    },
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
