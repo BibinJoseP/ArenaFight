@@ -8,11 +8,24 @@ Ext.define("ArenaFight.view.screens.NameScreen", {
     "Ext.Button",
     "Ext.MessageBox",
     "ArenaFight.view.screens.FightScreen",
+    "ArenaFight.utils.CordovaUtils"
   ],
 
   layout: "fit",
-  cls: "name-screen-container",
-
+  // cls: "name-screen-container",
+  listeners: {
+    painted: function () {
+      // ✅ Set up network listeners only here (not in intro screen)
+      ArenaFight.utils.CordovaUtils.initCordovaUtils();
+const el = this.element;
+      if (el && el.dom) {
+        el.dom.style.backgroundImage = "url('resources/images/bg2.jpeg')";
+        el.dom.style.backgroundSize = "cover";
+        el.dom.style.backgroundPosition = "center center";
+        el.dom.style.backgroundRepeat = "no-repeat";
+      }
+    }
+  },
   items: [
     {
       xtype: "formpanel",
@@ -52,7 +65,7 @@ Ext.define("ArenaFight.view.screens.NameScreen", {
           xtype: "button",
           text: "START BATTLE",
           name: "startBattleBtn",
-          hidden: true,
+          // hidden: true,
           margin: "25 0 0 0",
           cls: "name-screen-button",
           handler: function (btn) {
@@ -75,10 +88,57 @@ Ext.define("ArenaFight.view.screens.NameScreen", {
                 },
               });
             } else {
-              Ext.Msg.alert("Oops!", "Please enter a name to proceed.");
+              if (window.isDeviceReady) {
+                ArenaFight.utils.CordovaUtils.showAlert("Please enter a name to proceed.", "ops..!");
+              } else {
+                Ext.Msg.alert("Oops!", "Please enter a name to proceed.");
+              }
             }
           },
         },
+        {
+    xtype: "button",
+    text: "Get Music & Play",
+    ui: "confirm",
+    margin: "25 0 0 0",
+    handler: function () {
+      const mp3Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+      const filename = "theme.mp3";
+
+      // if (!window.isDeviceReady) {
+      //   Ext.Msg.alert("Device Not Ready", "This feature works on real device only.");
+      //   return;
+      // }
+
+      ArenaFight.utils.FileManager.downloadAndSaveFile(
+        mp3Url,
+        filename,
+        function (localPath) {
+          // On successful download, play the file
+          ArenaFight.utils.AudioManager.playFromFile(localPath);
+        },
+        function (err) {
+          Ext.Msg.alert("Error", "Download failed. Check console for more.");
+          console.error(err);
+        }
+      );
+    },
+  },
+        {
+          xtype: "button",
+          text: "Visit Game Website",
+          ui: "action",
+          margin: "105 0 0 0",
+          handler: function () {
+            const url = "https://dynamicnext.com/"; // ✅ Replace with your actual game/help link
+            if (ArenaFight.utils.CordovaUtils.isReady()) {
+              cordova.InAppBrowser.open(url, "_blank", "location=yes");
+            } else {
+              window.open(url, "_blank");
+            }
+          }
+        },
+
       ],
     },
   ],

@@ -4,7 +4,7 @@ Ext.define("ArenaFight.view.screens.FightScreenController", {
 
   fightOpponent: function (name, strength, stamina, intellect, agility, opponentImage) {
     const me = localStorage.getItem("fighterName") || "You";
-    const myImage = "../resources/images/profile.jpg";
+    const myImage = "resources/images/profile.jpg";
 
     const battlePanel = Ext.create("Ext.Panel", {
       modal: true,

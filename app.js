@@ -6,7 +6,9 @@ Ext.application({
     extend: 'ArenaFight.Application',
 
     name: 'ArenaFight',
-    controllers: ['Main'],
+    controllers: [
+        // 'Main'
+    ],
 
     requires: [
         // This will automatically load all classes in the ArenaFight namespace
@@ -16,7 +18,7 @@ Ext.application({
 
     // The name of the initial view to create.
     mainView: 'ArenaFight.view.main.Main',
-     launch: function() {
+    launch: function () {
         // Carousel override goes here
         Ext.override(Ext.carousel.Carousel, {
             onDragStart: Ext.emptyFn,
@@ -24,7 +26,7 @@ Ext.application({
             onDragEnd: Ext.emptyFn,
             onSwipe: Ext.emptyFn
         });
-                // ✅ Setup Cordova deviceready listener
+        // ✅ Setup Cordova deviceready listener
         window.isDeviceReady = false;
 
         document.addEventListener('deviceready', function () {
@@ -32,11 +34,16 @@ Ext.application({
             window.isDeviceReady = true;
         }, false);
 
+        document.addEventListener('deviceready', function () {
+            ArenaFight.utils.Platform.init();
+        }, false);
+
+
         // Optional: fallback if Cordova doesn't load after 5 seconds (debug mode)
         setTimeout(() => {
             if (!window.isDeviceReady) {
                 console.warn('Cordova deviceready not triggered. Are you testing in browser?');
             }
-        }, 5000); 
+        }, 5000);
     }
 });

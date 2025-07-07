@@ -5,10 +5,6 @@ $overlay-bg: rgba(0, 0, 0, 0.6);
 $text-shadow: 2px 2px 4px #000;
 
 // Mixin for shared slide styles
-@mixin slide-style($image) {
-    background-image: url($image);
-    background-size: cover;
-    background-position: center;
 
     .slide-content {
         position: absolute;
@@ -29,7 +25,7 @@ $text-shadow: 2px 2px 4px #000;
             border-radius: 10px;
         }
     }
-}
+
 
 // Intro screen styling
 .intro-screen {
@@ -50,9 +46,6 @@ $text-shadow: 2px 2px 4px #000;
         
     }
 
-    .slide-1 { @include slide-style('../../../../../resources/images/slide1.jpg'); }
-    .slide-2 { @include slide-style('../../../../../resources/images/slide2.jpg'); }
-    .slide-3 { @include slide-style('../../../../../resources/images/slide3.jpg'); }
 
     .x-button-action {
         background-color: $primary-color;

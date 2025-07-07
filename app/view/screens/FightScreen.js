@@ -2,6 +2,12 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
   extend: "Ext.Container",
   xtype: "fightscreen",
   controller: "fightscreen",
+  requires: [
+  "ArenaFight.utils.CordovaUtils",
+  "ArenaFight.utils.AudioManager",
+  "ArenaFight.utils.Platform"
+],
+
 
   config: {
     layout: "vbox",
@@ -115,8 +121,8 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                 listeners: {
                   itemtap: function (dataview, index, target, record, event) {
                     if (event.target.classList.contains("custom-fight-btn")) {
-                      ArenaFight.app
-                        .getController("Main")
+                      btn.up("fightscreen")
+                        .getController()
                         .fightOpponent(
                           record.get("name"),
                           record.get("strength"),
@@ -125,6 +131,8 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                           record.get("agility"),
                           record.get("image")
                         );
+                      //  Trigger Vibration Here
+                      ArenaFight.utils.CordovaUtils.vibrate(100);
                     }
                   },
                 },
@@ -223,11 +231,17 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                     cls: "arena-fightscreen-form-panel",
                     items: [
                       {
-                        xtype: "togglefield",
-                        label: "Music",
-                        labelAlign: "left",
-                        value: 1,
-                      },
+  xtype: "togglefield",
+  label: "Music",
+  labelAlign: "left",
+  value: localStorage.getItem("musicEnabled") !== "0",
+  listeners: {
+    change: function (toggle, newValue) {
+      ArenaFight.utils.AudioManager.toggle(newValue);
+    }
+  }
+},
+
                       {
                         xtype: "togglefield",
                         label: "Sound Effects",
@@ -245,6 +259,24 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                         value: "normal",
                       },
                       {
+                        xtype: "component",
+                        margin: "20 0",
+                        hidden: !window.device,
+                        html:
+                          window.device
+                            ? `
+        <div style="color:white; font-size:13px;">
+          <h3 style="color:#ccc;">Device Info</h3>
+          <p><b>Platform:</b> ${device.platform}</p>
+          <p><b>Version:</b> ${device.version}</p>
+          <p><b>Model:</b> ${device.model}</p>
+          <p><b>Manufacturer:</b> ${device.manufacturer || "Unknown"}</p>
+          <p><b>UUID:</b> ${device.uuid}</p>
+        </div>
+        `
+                            : ""
+                      },
+                      {
                         xtype: "button",
                         text: "Reset Progress",
                         ui: "decline",
@@ -256,22 +288,25 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
                           );
                         },
                       },
-{
-  xtype: "button",
-  text: "Logout",
-  ui: "decline",
-  handler: function () {
-    Ext.Msg.confirm("Exit", "Do you want to exit the game?", (btn) => {
-      if (btn === "yes") {
-        if (isDeviceReady && navigator.app && typeof navigator.app.exitApp === "function") {
-          navigator.app.exitApp();
-        } else {
-          Ext.Msg.alert("Error", "Cordova not ready or not supported in browser.");
-        }
-      }
-    });
-  },
-},
+                      {
+                        xtype: "button",
+                        text: "Logout",
+                        ui: "decline",
+                        handler: function () {
+                          ArenaFight.utils.CordovaUtils.confirm("Do you want to exit the game?", (btnIndex) => {
+                            const yesPressed = (typeof btnIndex === "string") ? btnIndex === "yes" : btnIndex === 1;
+                            if (yesPressed) {
+                              console.log(ArenaFight.utils.Platform.get())
+                              if (ArenaFight.utils.Platform.get() === 'android') {
+                                navigator.app.exitApp();
+                              } else {
+                                ArenaFight.utils.CordovaUtils.showAlert(`Notice, Exit is only supported on Android. You are on: ${ArenaFight.utils.Platform.get()}`);
+                              }
+                            }
+                          }, "Exit");
+                        }
+
+                      },
 
                     ],
                   },
@@ -298,13 +333,13 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
       `);
     }
 
-    // ✅ Auto-select Arena tab
+    //  Auto-select Arena tab
     const arenaBtn = this.down("button[text=Arena]");
     if (arenaBtn && typeof arenaBtn.getHandler() === "function") {
       arenaBtn.getHandler().call(arenaBtn.getScope() || this, arenaBtn);
     }
 
-    // ✅ Handle Android back button
+    // Handle Android back button
     document.addEventListener(
       "backbutton",
       () => {
@@ -324,5 +359,8 @@ Ext.define("ArenaFight.view.screens.FightScreen", {
       },
       false
     );
+
+    // Setup network listeners (specific to FightScreen)
+    ArenaFight.utils.CordovaUtils.initCordovaUtils();
   },
 });
