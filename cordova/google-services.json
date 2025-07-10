@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892305566260",
+    "project_id": "arenafight-14100",
+    "storage_bucket": "arenafight-14100.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892305566260:android:918a45a45b14d3a7207861",
+        "android_client_info": {
+          "package_name": "com.yourcompany.arenafight"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCimwOwitymoZI1HU-5Rl0xUO-BgnO93C4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

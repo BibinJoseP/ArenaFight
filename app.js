@@ -29,14 +29,74 @@ Ext.application({
         // ✅ Setup Cordova deviceready listener
         window.isDeviceReady = false;
 
-        document.addEventListener('deviceready', function () {
-            console.log('Cordova is ready.');
-            window.isDeviceReady = true;
-        }, false);
+document.addEventListener('deviceready', function () {
+    console.log('Cordova is ready.');
+    window.isDeviceReady = true;
 
-        document.addEventListener('deviceready', function () {
-            ArenaFight.utils.Platform.init();
-        }, false);
+    ArenaFight.utils.Platform.init();
+
+    // Firebase Messaging
+    if (cordova.plugins && cordova.plugins.firebase && cordova.plugins.firebase.messaging) {
+        const messaging = cordova.plugins.firebase.messaging;
+
+        messaging.requestPermission().then(() => {
+            console.log("Push permission granted");
+
+            messaging.getToken().then((token) => {
+                console.log("FCM Token:", token);
+            }).catch((err) => {
+                console.error("Error getting token:", err);
+            });
+
+            messaging.onTokenRefresh((token) => {
+                console.log("Token refreshed:", token);
+            });
+
+            messaging.onMessage((notification) => {
+                console.log("Foreground push received:", notification);
+
+                if (notification.tap) {
+                    console.log("Notification tapped (cold start or background)");
+                } else {
+                    alert(notification.body || "New Notification");
+                }
+            });
+
+        }).catch((err) => {
+            console.error("Push permission denied", err);
+        });
+    } else {
+        console.warn("Firebase Messaging plugin not available.");
+    }
+
+    // Firebase Analytics
+    if (cordova.plugins && cordova.plugins.firebase && cordova.plugins.firebase.analytics) {
+        const analytics = cordova.plugins.firebase.analytics;
+
+        analytics.logEvent("test_event", { method: "manual_test" })
+            .then(() => console.log("Analytics event sent"))
+            .catch((err) => console.error("Analytics error:", err));
+    } else {
+        console.warn("Firebase Analytics plugin not available.");
+    }
+
+    // // Firebase Crashlytics
+    // if (cordova.plugins && cordova.plugins.firebase && cordova.plugins.firebase.crashlytics) {
+    //     const crashlytics = cordova.plugins.firebase.crashlytics;
+
+    //     crashlytics.logMessage("This is a test Crashlytics log.")
+    //         .then(() => console.log("Crashlytics log sent"))
+    //         .catch((err) => console.error("Crashlytics log error:", err));
+
+    //     // To test crash (commented)
+    //     // crashlytics.sendCrash();
+    // } else {
+    //     console.warn("Firebase Crashlytics plugin not available.");
+    // }
+
+}, false);
+
+
 
 
         // Optional: fallback if Cordova doesn't load after 5 seconds (debug mode)
