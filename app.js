@@ -80,6 +80,35 @@ document.addEventListener('deviceready', function () {
         console.warn("Firebase Analytics plugin not available.");
     }
 
+    // Custom Plugin: Echo Notification Test
+    if (cordova.plugins && cordova.plugins.Echo && cordova.plugins.Echo.showNotification) {
+        cordova.plugins.Echo.showNotification(
+            "My Custom Notification",
+            "This is a message from the Echo plugin! Time: " + new Date().toLocaleTimeString(),
+            function(msg) {
+                console.log("✅ Notification function success: " + msg);
+            },
+            function(err) {
+                console.error("❌ Notification function failed: " + err);
+            }
+        );
+    } else {
+        console.warn("Echo plugin's showNotification method not available.");
+    }
+    // Custom Plugin: Echo Test
+// if (cordova.plugins && cordova.plugins.Echo) {
+//     cordova.plugins.Echo.echo("Hello from Echo Plugin!",
+//         function(msg) {
+//             console.log("✅ Echo successful: " + msg);
+//         },
+//         function(err) {
+//             console.error("❌ Echo failed: " + err);
+//         }
+//     );
+// } else {
+//     console.warn("Echo plugin not available.");
+// }
+
     // // Firebase Crashlytics
     // if (cordova.plugins && cordova.plugins.firebase && cordova.plugins.firebase.crashlytics) {
     //     const crashlytics = cordova.plugins.firebase.crashlytics;
@@ -93,7 +122,7 @@ document.addEventListener('deviceready', function () {
     // } else {
     //     console.warn("Firebase Crashlytics plugin not available.");
     // }
-
+ 
 }, false);
 
 

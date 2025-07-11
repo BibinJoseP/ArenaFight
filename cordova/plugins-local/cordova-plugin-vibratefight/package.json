@@ -1,0 +1,9 @@
+{
+  "name": "cordova-plugin-vibratefight",
+  "version": "1.0.0",
+  "description": "Custom vibration plugin for Cordova (Android + iOS)",
+  "cordova": {
+    "id": "cordova-plugin-vibratefight",
+    "platforms": ["android", "ios"]
+  }
+}

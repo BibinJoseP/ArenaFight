@@ -32,6 +32,32 @@
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+    <preference name="deployment-target" value="12.0" />
+<preference name="UseSwiftLanguageVersion" value="5" />
+
+    <!-- Notification Configuration -->
+    <config-file parent="aps-environment" target="*-Debug.plist">
+        <string>development</string>
+    </config-file>
+    <config-file parent="aps-environment" target="*-Release.plist">
+        <string>production</string>
+    </config-file>
+    <config-file parent="NSUserNotificationAlertStyle" target="*-Info.plist">
+        <string>alert</string>
+    </config-file>
+    <config-file parent="UIBackgroundModes" target="*-Info.plist">
+        <array>
+            <string>remote-notification</string>
+        </array>
+    </config-file>
+    
+    <!-- Plugin Declaration -->
+    <config-file target="config.xml" parent="/*">
+        <feature name="Echo">
+            <param name="ios-package" value="Echo" />
+        </feature>
+    </config-file>
+
     <resource-file src="GoogleService-Info.plist" />
         <icon height="180" src="resources/ios/icon/icon-60@3x.png" width="180" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
