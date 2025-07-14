@@ -128,52 +128,104 @@ const el = this.element;
   text: "Sign in with Google",
   ui: "action",
   margin: "25 0 0 0",
-  handler: function () {
-    if (window.plugins && window.plugins.googleplus) {
-      window.plugins.googleplus.login(
-        {
-          scopes: "profile email",
-          webClientId: "892305566260-c73115i0vascaimuideck19le91u8g44.apps.googleusercontent.com",
-          offline: true
-        },
-        function (userData) {
-          const name = userData.displayName || "Unknown";
-          localStorage.setItem("fighterName", name);
+handler: function () {
+  const clientId = "892305566260-c73115i0vascaimuideck19le91u8g44.apps.googleusercontent.com";
+  console.log("firebase.auth is", typeof firebase !== "undefined" && firebase.auth ? "available" : "undefined");
 
-          if (typeof firebase !== "undefined" && firebase.analytics) {
-            firebase.analytics().logEvent("google_sign_in_success", {
-              user_id: userData.userId,
-              email: userData.email,
-              display_name: userData.displayName,
-              timestamp: new Date().toISOString()
-            });
-          }
+  if (window.plugins && window.plugins.googleplus) {
+    // ✅ Native Google Sign-In (Cordova Android/iOS)
+    window.plugins.googleplus.login(
+      {
+        scopes: "profile email",
+        webClientId: clientId,
+        offline: true
+      },
+      function (userData) {
+        const name = userData.displayName || "Unknown";
+        localStorage.setItem("fighterName", name);
 
-          Ext.Viewport.setActiveItem({
-            xtype: "fightscreen",
-            animation: {
-              type: "slide",
-              direction: "left",
-              duration: 300
-            }
+        // 🔹 Log to Firebase Analytics
+        if (typeof firebase !== "undefined" && firebase.analytics) {
+          firebase.analytics().logEvent("google_sign_in_success", {
+            user_id: userData.userId,
+            email: userData.email,
+            display_name: userData.displayName,
+            timestamp: new Date().toISOString()
           });
-        },
-        function (error) {
-          console.error("Sign-in error:", error);
-          Ext.Msg.alert("Google Sign-In Failed", error);
-
-          if (typeof firebase !== "undefined" && firebase.analytics) {
-            firebase.analytics().logEvent("google_sign_in_error", {
-              error_message: error,
-              timestamp: new Date().toISOString()
-            });
-          }
         }
-      );
-    } else {
-      Ext.Msg.alert("Error", "Google Sign-In plugin not available.");
-    }
+
+        // ➤ Navigate to Fight Screen
+        Ext.Viewport.setActiveItem({
+          xtype: "fightscreen",
+          animation: {
+            type: "slide",
+            direction: "left",
+            duration: 300
+          }
+        });
+      },
+      function (error) {
+        console.error("Native Google Sign-In failed:", error);
+        Ext.Msg.alert("Google Sign-In Failed", error);
+
+        if (typeof firebase !== "undefined" && firebase.analytics) {
+          firebase.analytics().logEvent("google_sign_in_error", {
+            error_message: error,
+            timestamp: new Date().toISOString()
+          });
+        }
+      }
+    );
+  } else if (typeof firebase !== "undefined" && firebase.auth) {
+    // ✅ Web fallback Google Sign-In (for browser)
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope("email");
+    provider.addScope("profile");
+
+    firebase.auth().signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        const name = user.displayName || "Unknown";
+        localStorage.setItem("fighterName", name);
+
+        // 🔹 Log to Firebase Analytics
+        if (firebase.analytics) {
+          firebase.analytics().logEvent("google_sign_in_success_web", {
+            user_id: user.uid,
+            email: user.email,
+            display_name: user.displayName,
+            timestamp: new Date().toISOString()
+          });
+        }
+
+        // ➤ Navigate to Fight Screen
+        Ext.Viewport.setActiveItem({
+          xtype: "fightscreen",
+          animation: {
+            type: "slide",
+            direction: "left",
+            duration: 300
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Web Google Sign-In failed:", error);
+        Ext.Msg.alert("Google Sign-In Failed", error.message || "Unknown error");
+
+        if (firebase.analytics) {
+          firebase.analytics().logEvent("google_sign_in_error_web", {
+            error_message: error.message,
+            timestamp: new Date().toISOString()
+          });
+        }
+      });
+  } else {
+    // ❌ Neither Cordova plugin nor Firebase Web available
+    Ext.Msg.alert("Error", "Google Sign-In is not available in this environment.");
   }
+}
+
+
 },
 
         {

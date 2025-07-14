@@ -71,13 +71,19 @@ document.addEventListener('deviceready', function () {
 
     // Firebase Analytics
     if (cordova.plugins && cordova.plugins.firebase && cordova.plugins.firebase.analytics) {
-        const analytics = cordova.plugins.firebase.analytics;
+      const analytics = cordova.plugins.firebase.analytics;
 
-        analytics.logEvent("test_event", { method: "manual_test" })
-            .then(() => console.log("Analytics event sent"))
-            .catch((err) => console.error("Analytics error:", err));
+      analytics
+        .logEvent("test_event", { method: "manual_test" })
+        .then(() => console.log("Analytics event sent"))
+        .catch((err) => console.error("Analytics error:", err));
+
+      analytics.logEvent("app_launch", {
+        platform: device.platform,
+        timestamp: new Date().toISOString(),
+      });
     } else {
-        console.warn("Firebase Analytics plugin not available.");
+      console.warn("Firebase Analytics plugin not available.");
     }
 
     // Custom Plugin: Echo Notification Test
