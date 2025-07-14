@@ -6,6 +6,12 @@
         Apache Cordova Team
     </author>
     <content src="index.html" />
+<plugin name="cordova-plugin-googleplus" spec="8.5.2">
+    <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.892305566260-rot2dk3bnmqq8kq4i5kadttbuqvdoa4g" />
+    <variable name="WEB_APPLICATION_CLIENT_ID" value="892305566260-c73115i0vascaimuideck19le91u8g44.apps.googleusercontent.com" />
+</plugin>
+
+
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <icon src="resources/icon.png" />
@@ -59,6 +65,17 @@
     </config-file>
 
     <resource-file src="GoogleService-Info.plist" />
+     <!-- Add Google Sign-In URL Scheme -->
+        <config-file parent="CFBundleURLTypes" target="*-Info.plist">
+            <array>
+                <dict>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>com.googleusercontent.apps.892305566260-rot2dk3bnmqq8kq4i5kadttbuqvdoa4g</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
         <icon height="180" src="resources/ios/icon/icon-60@3x.png" width="180" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />

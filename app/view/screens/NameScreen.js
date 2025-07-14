@@ -123,7 +123,59 @@ const el = this.element;
         }
       );
     },
-  },
+  },{
+  xtype: "button",
+  text: "Sign in with Google",
+  ui: "action",
+  margin: "25 0 0 0",
+  handler: function () {
+    if (window.plugins && window.plugins.googleplus) {
+      window.plugins.googleplus.login(
+        {
+          scopes: "profile email",
+          webClientId: "892305566260-c73115i0vascaimuideck19le91u8g44.apps.googleusercontent.com",
+          offline: true
+        },
+        function (userData) {
+          const name = userData.displayName || "Unknown";
+          localStorage.setItem("fighterName", name);
+
+          if (typeof firebase !== "undefined" && firebase.analytics) {
+            firebase.analytics().logEvent("google_sign_in_success", {
+              user_id: userData.userId,
+              email: userData.email,
+              display_name: userData.displayName,
+              timestamp: new Date().toISOString()
+            });
+          }
+
+          Ext.Viewport.setActiveItem({
+            xtype: "fightscreen",
+            animation: {
+              type: "slide",
+              direction: "left",
+              duration: 300
+            }
+          });
+        },
+        function (error) {
+          console.error("Sign-in error:", error);
+          Ext.Msg.alert("Google Sign-In Failed", error);
+
+          if (typeof firebase !== "undefined" && firebase.analytics) {
+            firebase.analytics().logEvent("google_sign_in_error", {
+              error_message: error,
+              timestamp: new Date().toISOString()
+            });
+          }
+        }
+      );
+    } else {
+      Ext.Msg.alert("Error", "Google Sign-In plugin not available.");
+    }
+  }
+},
+
         {
           xtype: "button",
           text: "Visit Game Website",
